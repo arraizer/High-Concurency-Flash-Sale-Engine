@@ -24,8 +24,8 @@ spring:
       host: choice-marlin-177093.upstash.io
       port: 6379
       password: ggAAAAAAArPFAAIgcDHilUk3S1gETiTF3m6I4le4sAHaEa41zDa2ylQmYRfp4A
-      ssl: true
-          
+      ssl:
+          enabled: true
 
   rabbitmq:
     addresses: amqps://lbhmielu:26jTedW0k7EYJzgtQUQPAJUkD8dnRQXs@armadillo.rmq.cloudamqp.com/lbhmielu
