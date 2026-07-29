@@ -1,7 +1,29 @@
 package com.example.flashsale.entity;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+import jakarta.persistence.Id;
+
+import com.example.flashsale.enums.FlashSaleEventStatus;
+
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import lombok.Data;
+
 @Entity
 @Table(name = "flash_sale_events")
+@Data
 public class FlashSaleEvent {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

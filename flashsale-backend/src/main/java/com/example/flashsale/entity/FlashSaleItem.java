@@ -1,7 +1,32 @@
 package com.example.flashsale.entity;
 
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import org.springframework.data.annotation.Version;
+
+import com.example.flashsale.enums.FlashSaleItemStatus;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.ForeignKey;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import jakarta.persistence.Id;
+import lombok.Data;
+
 @Entity
 @Table(name = "flash_sale_items")
+@Data
 public class FlashSaleItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

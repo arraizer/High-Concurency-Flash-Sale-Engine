@@ -1,7 +1,24 @@
 package com.example.flashsale.entity;
 
+import java.time.LocalDateTime;
+import java.util.Map;
+
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
+
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Table;
+import jakarta.persistence.Id;
+import lombok.Data;
+
 @Entity
 @Table(name = "outbox_events")
+@Data
 public class OutboxEvent {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,8 +33,8 @@ public class OutboxEvent {
     @Column(name = "event_type", nullable = false, length = 50)
     private String eventType;
 
-    @Column(nullable = false, columnDefinition = "jsonb")
-    @Type(type = "jsonb")
+    @Column(name = "payload", columnDefinition = "jsonb")
+    @JdbcTypeCode(SqlTypes.JSON)
     private Map<String, Object> payload; // hoặc dùng String + converter
 
     @Column(nullable = false)
