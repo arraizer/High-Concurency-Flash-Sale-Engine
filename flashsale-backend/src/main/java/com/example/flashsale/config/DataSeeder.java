@@ -1,14 +1,26 @@
 package com.example.flashsale.config;
 
-import com.example.flashsale.entity.*;
-import com.example.flashsale.repository.*;
-import lombok.RequiredArgsConstructor;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import com.example.flashsale.entity.FlashSaleEvent;
+import com.example.flashsale.entity.FlashSaleItem;
+import com.example.flashsale.entity.Inventory;
+import com.example.flashsale.entity.Product;
+import com.example.flashsale.entity.User;
+import com.example.flashsale.enums.FlashSaleEventStatus;
+import com.example.flashsale.enums.FlashSaleItemStatus;
+import com.example.flashsale.repository.FlashSaleEventRepository;
+import com.example.flashsale.repository.FlashSaleItemRepository;
+import com.example.flashsale.repository.InventoryRepository;
+import com.example.flashsale.repository.ProductRepository;
+import com.example.flashsale.repository.UserRepository;
+
+import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
@@ -55,7 +67,7 @@ public class DataSeeder implements CommandLineRunner {
         event.setName("Flash Sale Vé Giờ Vàng");
         event.setStartTime(LocalDateTime.now().minusHours(1));
         event.setEndTime(LocalDateTime.now().plusHours(5));
-        event.setStatus("ACTIVE");
+        event.setStatus(FlashSaleEventStatus.ACTIVE);
         flashSaleEventRepository.save(event);
 
         // 5. Tạo Flash Sale Item
@@ -66,7 +78,7 @@ public class DataSeeder implements CommandLineRunner {
         item.setStock(100); // Kho riêng đợt sale
         item.setSoldCount(0);
         item.setVersion(0);
-        item.setStatus("IN_STOCK");
+        item.setStatus(FlashSaleItemStatus.IN_STOCK);
         flashSaleItemRepository.save(item);
 
         System.out.println("✅ === ĐÃ KHỞI TẠO DỮ LIỆU MẪU THÀNH CÔNG ===");
