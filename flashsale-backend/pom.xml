@@ -83,7 +83,13 @@
 			<artifactId>spring-boot-starter-webmvc-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-		
+		<!-- Source: https://mvnrepository.com/artifact/org.redisson/redisson -->
+		<dependency>
+    		<groupId>org.redisson</groupId>
+    		<artifactId>redisson</artifactId>
+    		<version>4.6.1</version>
+    		<scope>compile</scope>
+		</dependency>
 		<dependency>
     		<groupId>org.flywaydb</groupId>
     		<artifactId>flyway-core</artifactId>
