@@ -27,7 +27,7 @@ spring:
     redis:
       host: choice-marlin-177093.upstash.io
       port: 6379
-      password: ggAAAAAAArPFAAIgcDHilUk3S1gETiTF3m6I4le4sAHaEa41zDa2ylQmYRfp4A
+      password: gQAAAAAAArPFAAIgcDE5M2E0YWZlM2ViM2I0MGI5YjVlMzg5M2EwOWEyMWU2Yg
       ssl:
           enabled: true
 
