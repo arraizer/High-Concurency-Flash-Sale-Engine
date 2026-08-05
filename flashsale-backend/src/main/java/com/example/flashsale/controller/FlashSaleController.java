@@ -18,6 +18,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/flash-sales")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "*")
 public class FlashSaleController {
     private final FlashSaleStockService stockService;
     private final FlashSaleService flashSaleService;
