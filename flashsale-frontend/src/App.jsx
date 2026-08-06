@@ -70,13 +70,15 @@ function App() {
     try {
       const resText = await flashSaleService.placeOrder(USER_ID, item.id, 1);
       setMessage({ type: 'success', text: `🎉 ${resText}` });
-      
-      // 🔥 Sau khi trừ kho thành công, gọi lại fetchStock() để pull con số mới từ Redis về!
       await fetchStock();
-
     } catch (error) {
-      const errorMsg = error.response?.data || 'Trừ kho thất bại: Sản phẩm đã HẾT HÀNG!';
-      setMessage({ type: 'error', text: `❌ ${errorMsg}` });
+      // ⚠️ Bắt lỗi 429 (Too Many Requests) từ Rate Limiter
+      if (error.response?.status === 429) {
+        setMessage({ type: 'error', text: error.response.data || '⚠️ Bạn thao tác quá nhanh! Vui lòng thử lại sau.' });
+      } else {
+        const errorMsg = error.response?.data || 'Trừ kho thất bại: Sản phẩm đã HẾT HÀNG!';
+        setMessage({ type: 'error', text: `❌ ${errorMsg}` });
+      }
     } finally {
       setLoading(false);
     }
