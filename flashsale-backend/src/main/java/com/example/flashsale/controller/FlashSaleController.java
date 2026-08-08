@@ -62,5 +62,17 @@ public class FlashSaleController {
             return ResponseEntity.badRequest().body("Trừ kho thất bại: Sản phẩm đã HẾT HÀNG!");
         }
     }
+    // ⚠️ API TEST SYNC: Chọc thẳng Database (Không qua Redis, không qua RabbitMQ, không Rate Limit)
+    @GetMapping("/items/{itemId}/deduct-sync-test")
+    public ResponseEntity<String> deductStockSyncTest(@PathVariable Long itemId, @RequestParam(defaultValue = "1") int quantity) {
+        // Hàm này gọi direct SQL: UPDATE items SET stock = stock - quantity WHERE id = itemId AND stock >= quantity
+        boolean success = stockService.deductStockDirectDB(itemId, quantity);
+        
+        if (success) {
+            return ResponseEntity.ok("Trừ kho DB trực tiếp thành công!");
+        } else {
+            return ResponseEntity.badRequest().body("Trừ kho thất bại: Hết hàng hoặc tranh chấp DB!");
+        }
+    }
 
 }
