@@ -1,6 +1,6 @@
 # High-Concurency-Flash-Sale-Engine
 
-
+# K6 test load redis
   █ THRESHOLDS 
 
     http_req_failed{status:500}
@@ -44,3 +44,41 @@ running (0m35.2s), 0000/1000 VUs, 10710 complete and 0 interrupted iterations
 default ✓ [======================================] 0000/1000 VUs  35s
 
 ![alt text](image.png)
+
+
+# K6 sync test 
+█ TOTAL RESULTS 
+
+    checks_total.......: 15729  397.463798/s
+    checks_succeeded...: 27.29% 4293 out of 15729
+    checks_failed......: 72.70% 11436 out of 15729
+
+    ✗ Status 200 (Mua thành công)
+      ↳  1% — ✓ 100 / ✗ 5143
+    ✗ Status 5xx / Lock / Timeout (Lỗi Server/DB)
+      ↳  0% — ✓ 0 / ✗ 5243
+    ✗ Status 400 (Hết hàng)
+      ↳  79% — ✓ 4193 / ✗ 1050
+
+    HTTP
+    http_req_duration..............: avg=1.64s    min=0s       med=569.17ms max=12.86s   p(90)=6.21s    p(95)=6.79s   
+      { expected_response:true }...: avg=135.56ms min=18ms     med=115.93ms max=460.56ms p(90)=234.06ms p(95)=267.11ms
+    http_req_failed................: 98.09% 5143 out of 5243
+    http_reqs......................: 5243   132.487933/s
+
+    EXECUTION
+    iteration_duration.............: avg=5.2s     min=109.71ms med=1.11s    max=26.19s   p(90)=19.45s   p(95)=20.16s  
+    iterations.....................: 5243   132.487933/s
+    vus............................: 74     min=3            max=1000
+    vus_max........................: 1000   min=1000         max=1000
+
+    NETWORK
+    data_received..................: 1.2 MB 30 kB/s
+    data_sent......................: 520 kB 13 kB/s
+
+
+
+
+running (0m39.6s), 0000/1000 VUs, 5243 complete and 0 interrupted iterations
+default ✓ [======================================] 0000/1000 VUs  35s
+![alt text](image-1.png)
