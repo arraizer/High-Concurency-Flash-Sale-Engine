@@ -1,16 +1,19 @@
 package com.example.flashsale.service;
 
-import com.example.flashsale.entity.FlashSaleItem;
-import com.example.flashsale.repository.FlashSaleItemRepository;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import java.util.List;
+
 import org.redisson.api.RAtomicLong;
 import org.redisson.api.RedissonClient;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import com.example.flashsale.entity.FlashSaleItem;
+import com.example.flashsale.repository.FlashSaleItemRepository;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @RequiredArgsConstructor
@@ -70,5 +73,15 @@ public class FlashSaleStockService {
 
     private String getStockKey(Long itemId) {
         return STOCK_KEY_PREFIX + itemId + STOCK_KEY_SUFFIX;
+    }
+
+
+    @Transactional
+    public boolean deductStockDirectDB(Long itemId, int quantity) {
+        // Thực thi câu lệnh UPDATE trực tiếp xuống PostgreSQL
+        int updatedRows = flashSaleItemRepository.deductStockDirectDB(itemId, quantity);
+        
+        // Nếu số dòng bị ảnh hưởng > 0 nghĩa là trừ kho DB thành công!
+        return updatedRows > 0;
     }
 }
