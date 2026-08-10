@@ -1,7 +1,9 @@
 import axios from 'axios';
 
 // 1. Base URL chỉ dừng ở tên Controller
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://high-concurrency-flash-sale-engine.onrender.com' || 'http://localhost:8080/api/flash-sales';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL 
+  ? `${import.meta.env.VITE_API_BASE_URL}/api/flash-sales` 
+  : 'https://high-concurrency-flash-sale-engine.onrender.com/api/flash-sales';
 
 const apiClient = axios.create({
   baseURL: API_BASE_URL,
