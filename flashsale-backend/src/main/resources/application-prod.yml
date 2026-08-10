@@ -1,0 +1,39 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://db.gaskmmomooycodgnnize.supabase.co:5432/flashsale-db?sslmode=require
+    username: postgres
+    password: kW7qs306OCcLPckG
+    driver-class-name: org.postgresql.Driver
+
+    hikari:
+      maximum-pool-size: 20
+      minimum-idle: 10
+      connection-timeout: 3000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+      pool-name: FlashSaleHikariCP
+  jpa:
+    hibernate:
+      ddl-auto: validate 
+    show-sql: false
+    properties:
+      hibernate:
+        "[format_sql]": true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+    locations: classpath:db/migration
+  data:
+    redis:
+      host: choice-marlin-177093.upstash.io
+      port: 6379
+      password: choice-marlin-177093.upstash.io
+      ssl:
+        enabled: true
+
+  rabbitmq:
+    addresses: amqps://lbhmielu:26jTedW0k7EYJzgtQUQPAJUkD8dnRQXs@armadillo.rmq.cloudamqp.com/lbhmielu
+
+server:
+  port: 8080
