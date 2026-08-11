@@ -51,8 +51,7 @@ public class FlashSaleController {
         return ResponseEntity.ok(stockService.getStockFromRedis(itemId));
     }
    @GetMapping("/items/{itemId}/deduct-test")
-// Bỏ bớt @RateLimit hoặc tăng nhẹ để test không bị chặn nhầm, ví dụ: limit = 10
-@RateLimit(limit = 10, timeoutInSeconds = 1) 
+@RateLimit(limit = 2, timeoutInSeconds = 1) 
 public ResponseEntity<?> deductStockTest(@PathVariable Long itemId, @RequestParam(defaultValue = "1") int quantity) {
     boolean success = stockService.deductStock(itemId, quantity);
     
