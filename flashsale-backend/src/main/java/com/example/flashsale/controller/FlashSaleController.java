@@ -1,6 +1,8 @@
 package com.example.flashsale.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -48,20 +50,28 @@ public class FlashSaleController {
     public ResponseEntity<Long> getRedisStock(@PathVariable Long itemId) {
         return ResponseEntity.ok(stockService.getStockFromRedis(itemId));
     }
-    @GetMapping("/items/{itemId}/deduct-test")
-    @RateLimit(limit = 2, timeoutInSeconds = 1) // 👈 Giới hạn: Tối đa 2 requests / 1 giây cho mỗi IP
-    public ResponseEntity<String> deductStockTest(@PathVariable Long itemId, @RequestParam(defaultValue = "1") int quantity) {
-        boolean success = stockService.deductStock(itemId, quantity);
-        
-        if (success) {
-            FlashSaleOrderMessage message = new FlashSaleOrderMessage(101L, itemId, quantity);
-            orderMessageProducer.sendOrderMessage(message);
+   @GetMapping("/items/{itemId}/deduct-test")
+// Bỏ bớt @RateLimit hoặc tăng nhẹ để test không bị chặn nhầm, ví dụ: limit = 10
+@RateLimit(limit = 10, timeoutInSeconds = 1) 
+public ResponseEntity<?> deductStockTest(@PathVariable Long itemId, @RequestParam(defaultValue = "1") int quantity) {
+    boolean success = stockService.deductStock(itemId, quantity);
+    
+    Map<String, Object> response = new HashMap<>();
 
-            return ResponseEntity.ok("Đặt hàng thành công! Stock còn lại trên Redis: " + stockService.getStockFromRedis(itemId));
-        } else {
-            return ResponseEntity.badRequest().body("Trừ kho thất bại: Sản phẩm đã HẾT HÀNG!");
-        }
+    if (success) {
+        FlashSaleOrderMessage message = new FlashSaleOrderMessage(101L, itemId, quantity);
+        orderMessageProducer.sendOrderMessage(message);
+
+        response.put("success", true);
+        response.put("message", "Đặt hàng thành công!");
+        response.put("remainingStock", stockService.getStockFromRedis(itemId));
+        return ResponseEntity.ok(response);
+    } else {
+        response.put("success", false);
+        response.put("message", "Trừ kho thất bại: Sản phẩm đã HẾT HÀNG!");
+        return ResponseEntity.badRequest().body(response);
     }
+}
     // ⚠️ API TEST SYNC: Chọc thẳng Database (Không qua Redis, không qua RabbitMQ, không Rate Limit)
     @GetMapping("/items/{itemId}/deduct-sync-test")
     public ResponseEntity<String> deductStockSyncTest(@PathVariable Long itemId, @RequestParam(defaultValue = "1") int quantity) {

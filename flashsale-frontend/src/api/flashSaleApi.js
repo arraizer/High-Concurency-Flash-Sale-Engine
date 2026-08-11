@@ -30,10 +30,10 @@ export const flashSaleService = {
   },
 
   placeOrder: async (userId, itemId, quantity = 1) => {
-    // Gọi đúng: https://high-concurrency-flash-sale-engine.onrender.com/api/flash-sales/items/1/deduct-test
-    const response = await apiClient.get(`/api/flash-sales/items/${itemId}/deduct-test`, {
-      params: { quantity }
-    });
-    return response.data;
-  },
+  const response = await apiClient.get(`/api/flash-sales/items/${itemId}/deduct-test`, {
+    params: { quantity }
+  });
+  // Vì Backend trả về JSON { success: true, message: "..." }
+  return response.data.message; 
+},
 };
