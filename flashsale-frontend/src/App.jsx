@@ -63,26 +63,39 @@ function App() {
 
   // Hàm săn deal
   const handleBuy = async () => {
-    if (!item) return;
-    setLoading(true);
-    setMessage({ type: '', text: '' });
+  if (!item) return;
+  setLoading(true);
+  setMessage({ type: '', text: '' });
 
-    try {
-      const resText = await flashSaleService.placeOrder(USER_ID, item.id, 1);
-      setMessage({ type: 'success', text: `🎉 ${resText}` });
-      await fetchStock();
-    } catch (error) {
-      // ⚠️ Bắt lỗi 429 (Too Many Requests) từ Rate Limiter
-      if (error.response?.status === 429) {
-        setMessage({ type: 'error', text: error.response.data || '⚠️ Bạn thao tác quá nhanh! Vui lòng thử lại sau.' });
-      } else {
-        const errorMsg = error.response?.data || 'Trừ kho thất bại: Sản phẩm đã HẾT HÀNG!';
-        setMessage({ type: 'error', text: `❌ ${errorMsg}` });
-      }
-    } finally {
-      setLoading(false);
+  try {
+    // Ép item.id về Number hoặc lấy id chuẩn
+    const itemId = Number(item.id) || 1; 
+    const res = await flashSaleService.placeOrder(USER_ID, itemId, 1);
+    
+    // Nếu Backend trả về Object JSON hoặc String
+    const successMsg = typeof res === 'object' ? res.message : res;
+    setMessage({ type: 'success', text: `🎉 ${successMsg}` });
+    await fetchStock();
+  } catch (error) {
+    // Lấy message từ response object nếu có
+    const data = error.response?.data;
+    let errorText = 'Trừ kho thất bại: Sản phẩm đã HẾT HÀNG!';
+
+    if (typeof data === 'string') {
+      errorText = data;
+    } else if (data && data.message) {
+      errorText = data.message;
     }
-  };
+
+    if (error.response?.status === 429) {
+      setMessage({ type: 'error', text: `⚠️ ${errorText || 'Bạn thao tác quá nhanh!'}` });
+    } else {
+      setMessage({ type: 'error', text: `❌ ${errorText}` });
+    }
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
     <div className="min-h-screen bg-slate-900 text-white flex flex-col items-center justify-center p-4">

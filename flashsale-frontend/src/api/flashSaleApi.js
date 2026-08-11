@@ -30,10 +30,13 @@ export const flashSaleService = {
   },
 
   placeOrder: async (userId, itemId, quantity = 1) => {
-  const response = await apiClient.get(`/api/flash-sales/items/${itemId}/deduct-test`, {
-    params: { quantity }
+  // Ép kiểu ép số rõ ràng để không bị dính chuỗi ":1"
+  const cleanItemId = Number(itemId) || 1;
+  const cleanQuantity = Number(quantity) || 1;
+
+  const response = await apiClient.get(`/api/flash-sales/items/${cleanItemId}/deduct-test`, {
+    params: { quantity: cleanQuantity }
   });
-  // Vì Backend trả về JSON { success: true, message: "..." }
-  return response.data.message; 
+  return response.data;
 },
 };
